@@ -57,9 +57,26 @@ namespace YiMusic.DAL.Repositories
             return await _context.Music.ToListAsync();
         }
 
-        public Task<bool> Update(int id, Music item)
+        public async Task<bool> Update(int id, Music item)
         {
-            throw new NotImplementedException();
+            if (id != item.Id)
+                return false;
+            if (await MusicExists(item.Id))
+                return false;
+            _context.Entry(item).State = EntityState.Modified;
+            try
+            {
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch(DbUpdateException)
+            {
+                return false;
+            }
+        }
+        private async Task<bool> MusicExists(int id)
+        {
+           return await _context.Music.AnyAsync(x => x.Id == id);
         }
     }
 }
