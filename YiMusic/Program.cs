@@ -1,9 +1,17 @@
 using Microsoft.EntityFrameworkCore;
+using YiMusic.BLL.Interfaces;
+using YiMusic.BLL.Services;
 using YiMusic.DAL.Data;
+using YiMusic.DAL.Interfaces;
+using YiMusic.DAL.Repositories;
+using YiMusic.Domain.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddControllersWithViews();
+builder.Services.AddTransient<IRepository<Music>, MusicRepositories>();
+builder.Services.AddTransient<IMusicServices, MusicServices>();
 builder.Services.AddControllersWithViews();
 
 string? connection = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -28,6 +36,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Music}/{action=Index}/{id?}");
 
 app.Run();

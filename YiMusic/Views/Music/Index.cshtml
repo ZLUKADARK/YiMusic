@@ -1,0 +1,17 @@
+﻿@model IEnumerable<YiMusic.Domain.DataTranserObjects.Music.GetMusicDto>
+
+@{
+    ViewData["Title"] = "Index";
+}
+    
+     @foreach (var item in Model)
+     {
+            <img class="fit-picture" src="@item.Image">
+                 <audio controls>
+                     <source src="@item.MusicPathUrl" type="audio/mpeg">
+                     Your browser does not support the audio element.
+                 </audio>
+
+     }
+    
+

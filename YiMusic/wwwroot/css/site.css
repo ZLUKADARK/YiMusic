@@ -20,3 +20,7 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.fit-picture{
+    width: 100px;
+}
