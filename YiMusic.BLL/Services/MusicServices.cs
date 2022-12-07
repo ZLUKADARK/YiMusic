@@ -33,9 +33,10 @@ namespace YiMusic.BLL.Services
             };
         }
 
-        public Task<bool> DeleteMusic(int id)
+        public async Task<bool> DeleteMusic(int id)
         {
-            throw new NotImplementedException();
+            var result = await _musicRepository.Delete(id);
+            return await DeleteLocal(result);
         }
 
         public async Task<IEnumerable<GetMusicDto>> GetAllMusic()
@@ -53,9 +54,18 @@ namespace YiMusic.BLL.Services
             return result.ToList();
         }
 
-        public Task<GetMusicDto> GetMusic(int id)
+        public async Task<GetMusicDto> GetMusic(int id)
         {
-            throw new NotImplementedException();
+            var result = await _musicRepository.Get(id);
+            return new GetMusicDto
+            {
+                Id = result.Id,
+                Author = result.Author,
+                Description = result.Description,
+                Title = result.Title,
+                MusicPathUrl = result.MusicPathUrl,
+                Image = result.Image
+            };
         }
 
         public Task<bool> UpdateMusic(CreateMusicDto item)
@@ -91,6 +101,20 @@ namespace YiMusic.BLL.Services
             }
 
             return new Music() { Author = item.Author, Description = item.Description, Title = item.Title, MusicPathUrl = musicPath, Image = musicImage };
+        }
+        private async Task<bool> DeleteLocal(Music item)
+        {
+            string fulpath = Path.GetFullPath(Environment.CurrentDirectory + "/wwwroot");
+            try
+            {
+                File.Delete(fulpath + item.MusicPathUrl);
+                File.Delete(fulpath + item.Image);
+            }
+            catch
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

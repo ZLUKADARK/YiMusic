@@ -70,18 +70,11 @@ namespace YiMusic.Controllers
         }
 
         // GET: MusicController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: MusicController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<ActionResult> Delete(int id)
         {
             try
             {
+                await _musicService.DeleteMusic(id);
                 return RedirectToAction(nameof(Index));
             }
             catch

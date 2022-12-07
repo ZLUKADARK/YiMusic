@@ -29,20 +29,20 @@ namespace YiMusic.DAL.Repositories
             }
         }
 
-        public async Task<bool> Delete(int id)
+        public async Task<Music> Delete(int id)
         {
             var item = await _context.Music.FindAsync(id);
             if (item == null)
-                return false;
+                return null;
             _context.Music.Remove(item);
             try
             {
                 await _context.SaveChangesAsync();
-                return true;
+                return item;
             }
             catch(DbException)
             {
-                return false;
+                return null;
             }
         }
 
@@ -57,21 +57,21 @@ namespace YiMusic.DAL.Repositories
             return await _context.Music.ToListAsync();
         }
 
-        public async Task<bool> Update(int id, Music item)
+        public async Task<Music> Update(int id, Music item)
         {
             if (id != item.Id)
-                return false;
+                return null;
             if (await MusicExists(item.Id))
-                return false;
+                return null;
             _context.Entry(item).State = EntityState.Modified;
             try
             {
                 await _context.SaveChangesAsync();
-                return true;
+                return item;
             }
             catch(DbUpdateException)
             {
-                return false;
+                return null;
             }
         }
         private async Task<bool> MusicExists(int id)

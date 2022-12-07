@@ -23,4 +23,8 @@
     <ProjectReference Include="..\YiMusic.BLL\YiMusic.BLL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\DataFiels\" />
+  </ItemGroup>
+
 </Project>
